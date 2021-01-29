@@ -8,10 +8,10 @@ import {
   ImageBackground,
   Alert
 } from "react-native";
-import MainButton from "../components/MainButton";
+import MainButton from "../../components/MainButton";
 
 import { useDispatch } from "react-redux";
-import { guessWordAction } from "../store/actions/GuessWord";
+import { guessWordAction } from "../../store/actions/GuessWord";
 
 const GameFieldsScreen = (props) => {
   const [wordField, setWordField] = useState("");
@@ -61,7 +61,7 @@ const GameFieldsScreen = (props) => {
 
   return (
     <ImageBackground
-      source={require("../assets/images/fields_screen.png")}
+      source={require("../../assets/images/fields_screen.png")}
       style={styles.backgroundImage}
     >
       <ScrollView contentContainerStyle={styles.scrollView}>

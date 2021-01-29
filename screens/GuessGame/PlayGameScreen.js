@@ -5,12 +5,10 @@ import {
   StyleSheet,
   ImageBackground,
   TouchableOpacity,
-  ScrollView,
-  Alert,
 } from "react-native";
 
 import { useSelector, useDispatch } from "react-redux";
-import { decrementRoundsAction } from "../store/actions/GuessWord";
+import { decrementRoundsAction } from "../../store/actions/GuessWord";
 
 const PlayGameScreen = (props) => {
   const [unknownWord, setUnknownWord] = useState([]);
@@ -113,7 +111,7 @@ const PlayGameScreen = (props) => {
 
   return (
     <ImageBackground
-      source={require("../assets/images/play_game.png")}
+      source={require("../../assets/images/play_game.png")}
       style={styles.backgroundImage}
     >
       <View style={styles.mainContainer}>

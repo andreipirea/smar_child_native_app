@@ -1,23 +1,25 @@
 import React from "react";
+import { Button, TouchableOpacity } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 
-import { Feather, SimpleLineIcons } from "@expo/vector-icons";
+import { SimpleLineIcons } from "@expo/vector-icons";
 
 import HomeScreen from "../screens/HomeScreen";
-import GameFieldsScreen from "../screens/GameFieldsScreen";
-import PlayGameScreen from "../screens/PlayGameScreen";
-import GameOverScreen from "../screens/GameOverScreen";
-import LostGameScreen from "../screens/LostGameScreen";
-import MemoList from "../screens/memo/MemoList";
+import GameFieldsScreen from "../screens/GuessGame/GameFieldsScreen";
+import PlayGameScreen from "../screens/GuessGame/PlayGameScreen";
+import GameOverScreen from "../screens/GuessGame/GameOverScreen";
+import LostGameScreen from "../screens/GuessGame/LostGameScreen";
+import MemoList, {screenOptions} from "../screens/Memo/MemoList";
+import AddNote, {addNoteScreenOptions} from "../screens/Memo/AddNote";
 import Colors from "../constants/colors";
 
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
 
-const GuessGameStack = () => {
+const GuessGameStack = (props) => {
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -37,8 +39,8 @@ const GuessGameStack = () => {
         name="PlayGameScreen"
         component={PlayGameScreen}
         options={{
-          title: "Alege alt cuvant",
-          headerTitleAlign: "left",
+          title: "Ghicește cuvântul",
+          headerTitleAlign: "center",
           headerTintColor: "white",
           // headerShown: false,
           headerStyle: {
@@ -79,22 +81,29 @@ const GuessGameStack = () => {
 const MemoListStack = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="MemoList" component={MemoList} />
+      <Stack.Screen
+        name="MemoList"
+        component={MemoList}
+        options={screenOptions}
+      />
+      <Stack.Screen 
+        name="AddNote"
+        component={AddNote}
+        options={addNoteScreenOptions}
+      />
     </Stack.Navigator>
   );
 };
 
 const GuessGameTab = () => {
   return (
-    <Tab.Navigator
-      shifting={true}
-    >
+    <Tab.Navigator shifting={true}>
       <Tab.Screen
         name="GuessGameStack"
         component={GuessGameStack}
         options={{
           tabBarLabel: "Ghicește cuvântul",
-          tabBarColor: 'green',
+          tabBarColor: "green",
           tabBarIcon: ({ color }) => {
             return <SimpleLineIcons name="book-open" size={24} color={color} />;
           },

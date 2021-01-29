@@ -9,8 +9,8 @@ import {
 } from "react-native";
 // import BodyText from "../components/BodyText";
 // import TitleText from "../components/TitleText";
-import Colors from "../constants/colors";
-import MainButton from "../components/MainButton";
+import Colors from "../../constants/colors";
+import MainButton from "../../components/MainButton";
 import { useSelector } from "react-redux";
 
 
@@ -25,7 +25,7 @@ const GameOverScreen = (props) => {
         <View style={styles.imageContainer}>
           <Image
             fadeDuration={1000}
-            source={require("../assets/images/success.png")}
+            source={require("../../assets/images/success.png")}
             // source={{uri: 'https://cdn.pixabay.com/photo/2020/05/20/06/47/mountain-5195052__340.jpg'}}
             style={styles.image}
             resizeMode="cover"

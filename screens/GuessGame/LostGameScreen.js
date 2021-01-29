@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import MainButton from '../components/MainButton';
+import MainButton from '../../components/MainButton';
 import {useSelector} from 'react-redux';
 
 const LostGameScreen = props => {

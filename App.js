@@ -1,17 +1,27 @@
-import 'react-native-gesture-handler';
+import "react-native-gesture-handler";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 import AppNavigator from "./navigation/AppNavigator";
 
-import {Provider} from 'react-redux';
-import {createStore, combineReducers} from 'redux';
-import guessWordReducer from './store/reducers/GuessWord';
+import { Provider } from "react-redux";
+import { createStore, combineReducers, compose, applyMiddleware } from "redux";
+import ReduxThunk from 'redux-thunk';
+
+import guessWordReducer from "./store/reducers/GuessWord";
+import {notesReducer} from "./store/reducers/Memo";
 
 const rootReducer = combineReducers({
-  guessWordReducer: guessWordReducer
+  guessWordReducer: guessWordReducer,
+  notesReducer: notesReducer,
 });
 
-const store = createStore(rootReducer);
+let composeEnhancers = compose;
+
+if(__DEV__) {
+  composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+}
+
+const store = createStore(rootReducer, compose(applyMiddleware(ReduxThunk), composeEnhancers()));
 
 export default function App() {
   return (
