@@ -3,10 +3,13 @@ import { TouchableOpacity, View, Text, StyleSheet, Dimensions } from "react-nati
 
 const NoteCard = (props) => {
   return (
-    <TouchableOpacity onPress={props.onPress} style={styles.touchableContainer}>
+    <TouchableOpacity onPress={props.onPress} onLongPress={props.onLongPress} delayLongPress={props.delayLongPress} style={styles.touchableContainer}>
       <View style={styles.cardContainer}>
+        <View style={styles.textContainer}>
         <Text style={styles.title}>{props.title}</Text>
         <Text style={styles.text}>{props.text}</Text>
+        </View>
+        <View style={styles.checkBox}>{props.children}</View>
       </View>
     </TouchableOpacity>
   );
@@ -25,7 +28,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     height: "90%",
     overflow: "hidden",
-
+    flexDirection: "row"
+  },
+  textContainer: {
+    flexDirection: "column"
   },
   title: {
     fontSize: 20,
@@ -33,6 +39,11 @@ const styles = StyleSheet.create({
   text: {
     
   },
+  checkBox: {
+    position:"absolute",
+    top: 3,
+    right: 3
+  }
 });
 
 export default NoteCard;
