@@ -86,7 +86,7 @@ const AddNote = (props) => {
   );
 };
 
-export const addNoteScreenOptions = (navData) => {
+export const addNoteScreenOptions = () => {
   return {
     title: "Adaugă o notiță nouă",
     headerTitleAlign: "center",

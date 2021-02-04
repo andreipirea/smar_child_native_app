@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import {
   View,
   StyleSheet,
@@ -8,16 +8,20 @@ import {
   BackHandler,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
-import { getNotes, unCheckNotes, editNote } from "../../store/actions/Memo";
+import {
+  getNotes,
+  unCheckNotes,
+  editNote,
+  deleteNote,
+} from "../../store/actions/Memo";
 
 import NoteCard from "../../components/NoteCard";
 import { MaterialIcons } from "@expo/vector-icons";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AntDesign } from "@expo/vector-icons";
 import { useIsFocused } from "@react-navigation/native";
 import CheckBox from "@react-native-community/checkbox";
 
 const MemoList = (props) => {
-  const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [checkBoxVisible, setCheckBoxVisible] = useState(false);
 
   const notes = useSelector((state) => state.notesReducer);
@@ -106,6 +110,20 @@ const MemoList = (props) => {
     );
   }
 
+  // useLayoutEffect(() => {
+  //   props.navigation.setOptions({
+  //     // title: checkBoxVisible ? "Selectează notițe" : "Notițe",
+  //     headerRight: () => (
+  //       <TouchableOpacity
+  //         onPress={() => dispatch(deleteNote())}
+  //         style={{ marginRight: 15 }}
+  //       >
+  //         <AntDesign name="delete" size={24} color="white" />
+  //       </TouchableOpacity>
+  //     ),
+  //   });
+  // }, []);
+
   return (
     <View style={styles.mainContainer}>
       <FlatList
@@ -119,6 +137,8 @@ const MemoList = (props) => {
 };
 
 export const screenOptions = (navData) => {
+  const notes = useSelector((state) => state.notesReducer);
+  const isSelected = notes.some((e) => e.isChecked === true);
   return {
     title: "Notițe",
     headerTitleAlign: "center",
@@ -131,7 +151,11 @@ export const screenOptions = (navData) => {
         onPress={() => navData.navigation.navigate("AddNote")}
         style={{ marginRight: 15 }}
       >
-        <MaterialIcons name="playlist-add" size={27} color="white" />
+        {isSelected ? (
+          <AntDesign name="delete" size={24} color="white" />
+        ) : (
+          <MaterialIcons name="playlist-add" size={27} color="white" />
+        )}
       </TouchableOpacity>
     ),
   };

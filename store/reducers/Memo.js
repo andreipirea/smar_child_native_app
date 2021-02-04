@@ -1,4 +1,4 @@
-import { ADD_NOTE, EDIT_NOTE, GET_NOTES_FROM_STORAGE, UNCHECK_NOTES, storeStateLocal } from "../actions/Memo";
+import { ADD_NOTE, EDIT_NOTE, GET_NOTES_FROM_STORAGE, UNCHECK_NOTES, DELETE_NOTE, storeStateLocal } from "../actions/Memo";
 import NoteModel from "../../content/NoteModel";
 
 const initialState = [];
@@ -36,8 +36,11 @@ export const notesReducer = (state = initialState, action) => {
         if (e.isChecked === true) {
           e.isChecked = false;
         }
-
       });
+      storeStateLocal(state);
+      return state;
+    case DELETE_NOTE:
+      state = state.filter(e => e.isChecked !== true);
       storeStateLocal(state);
       return state;
     default:

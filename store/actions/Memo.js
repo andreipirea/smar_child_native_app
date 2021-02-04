@@ -1,11 +1,10 @@
-// import React from "react";
-import { useSelector } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const ADD_NOTE = "ADD_NOTE";
 export const GET_NOTES_FROM_STORAGE = "GET_NOTES_FROM_STORAGE";
 export const EDIT_NOTE = "EDIT_NOTE";
 export const UNCHECK_NOTES = "UNCHECK_NOTES";
+export const DELETE_NOTE = "DELETE_NOTE";
 
 // const notes = useSelector((state) => state.notesReducer);
 
@@ -50,5 +49,11 @@ export const editNote = (id, title, text, isChecked) => {
 export const unCheckNotes = () => {
   return {
     type: UNCHECK_NOTES
+  }
+};
+
+export const deleteNote = () => {
+  return {
+    type: DELETE_NOTE
   }
 };
