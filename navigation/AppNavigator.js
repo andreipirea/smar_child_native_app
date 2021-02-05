@@ -84,7 +84,7 @@ const MemoListStack = () => {
       <Stack.Screen
         name="MemoList"
         component={MemoList}
-        options={screenOptions}
+        // options={screenOptions}
       />
       <Stack.Screen 
         name="AddNote"

@@ -20,6 +20,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { useIsFocused } from "@react-navigation/native";
 import CheckBox from "@react-native-community/checkbox";
+import { HeaderBackButton } from "@react-navigation/stack";
 
 const MemoList = (props) => {
   const [checkBoxVisible, setCheckBoxVisible] = useState(false);
@@ -28,17 +29,67 @@ const MemoList = (props) => {
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
 
+  const isSelected = notes.some((e) => e.isChecked === true);
+
   useEffect(() => {
+    if (notes.length == 0) {
+      setCheckBoxVisible(false);
+    }
+  }, [notes])
+  
+  useEffect(() => {
+    props.navigation.setOptions({
+      title: checkBoxVisible ? "Selectează notițe" : "Notițe",
+      headerTitleAlign: "center",
+      headerTintColor: "white",
+      headerStyle: {
+        backgroundColor: "orange",
+      },
+      headerLeft: () => (
+        <HeaderBackButton
+          onPress={() =>
+            checkBoxVisible
+              ? setCheckBoxVisible(false)
+              : props.navigation.navigate("GameFieldsScreen")
+          }
+          tintColor="white"
+        />
+      ),
+      headerRight: () => (
+        <TouchableOpacity
+          onPress={() => {
+            if (checkBoxVisible) {
+              dispatch(deleteNote());
+              dispatch(getNotes());
+            } else {
+              props.navigation.navigate("AddNote");
+            }
+          }}
+          style={{ marginRight: 15 }}
+        >
+          {checkBoxVisible ? (
+            <View style={styles.headerDeleteCheckBoxContainer}>
+              <AntDesign name="delete" size={24} color="white" />
+              {/* <CheckBox tintColor="white" /> */}
+            </View>
+          ) : (
+            <MaterialIcons name="playlist-add" size={27} color="white" />
+          )}
+        </TouchableOpacity>
+      ),
+    });
+
     if (!isFocused) {
       setCheckBoxVisible(false);
       // setToggleCheckBox(false);
     }
     dispatch(getNotes());
-  }, [isFocused]);
 
-  useEffect(() => {
+
     if (checkBoxVisible === false) {
       dispatch(unCheckNotes());
+      dispatch(getNotes());
+
     }
     const backButtonHandler = () => {
       if (checkBoxVisible == true) {
@@ -51,7 +102,32 @@ const MemoList = (props) => {
     BackHandler.addEventListener("hardwareBackPress", backButtonHandler);
     return () =>
       BackHandler.removeEventListener("hardwareBackPress", backButtonHandler);
-  }, [checkBoxVisible]);
+  }, [isFocused, checkBoxVisible]);
+
+  // useEffect(() => {
+  //   if (!isFocused) {
+  //     setCheckBoxVisible(false);
+  //     // setToggleCheckBox(false);
+  //   }
+  //   dispatch(getNotes());
+  // }, [isFocused]);
+
+  // useEffect(() => {
+  //   if (checkBoxVisible === false) {
+  //     dispatch(unCheckNotes());
+  //   }
+  //   const backButtonHandler = () => {
+  //     if (checkBoxVisible == true) {
+  //       setCheckBoxVisible(false);
+  //       return true;
+  //     } else {
+  //       return false;
+  //     }
+  //   };
+  //   BackHandler.addEventListener("hardwareBackPress", backButtonHandler);
+  //   return () =>
+  //     BackHandler.removeEventListener("hardwareBackPress", backButtonHandler);
+  // }, [checkBoxVisible]);
 
   const Item = (itemData) => {
     return (
@@ -85,7 +161,7 @@ const MemoList = (props) => {
               : { display: "none", opacity: 0 }
           }
           disabled={false}
-          value={!checkBoxVisible ? false : itemData.item.isChecked}
+          value={itemData.item.isChecked}
           onValueChange={() => {
             dispatch(
               editNote(
@@ -110,20 +186,6 @@ const MemoList = (props) => {
     );
   }
 
-  // useLayoutEffect(() => {
-  //   props.navigation.setOptions({
-  //     // title: checkBoxVisible ? "Selectează notițe" : "Notițe",
-  //     headerRight: () => (
-  //       <TouchableOpacity
-  //         onPress={() => dispatch(deleteNote())}
-  //         style={{ marginRight: 15 }}
-  //       >
-  //         <AntDesign name="delete" size={24} color="white" />
-  //       </TouchableOpacity>
-  //     ),
-  //   });
-  // }, []);
-
   return (
     <View style={styles.mainContainer}>
       <FlatList
@@ -136,30 +198,48 @@ const MemoList = (props) => {
   );
 };
 
-export const screenOptions = (navData) => {
-  const notes = useSelector((state) => state.notesReducer);
-  const isSelected = notes.some((e) => e.isChecked === true);
-  return {
-    title: "Notițe",
-    headerTitleAlign: "center",
-    headerTintColor: "white",
-    headerStyle: {
-      backgroundColor: "orange",
-    },
-    headerRight: () => (
-      <TouchableOpacity
-        onPress={() => navData.navigation.navigate("AddNote")}
-        style={{ marginRight: 15 }}
-      >
-        {isSelected ? (
-          <AntDesign name="delete" size={24} color="white" />
-        ) : (
-          <MaterialIcons name="playlist-add" size={27} color="white" />
-        )}
-      </TouchableOpacity>
-    ),
-  };
-};
+// export const screenOptions = (navData) => {
+//   const notes = useSelector((state) => state.notesReducer);
+//   const isSelected = notes.some((e) => e.isChecked === true);
+
+//   return {
+//     title: isSelected ? "Selectează notițe" : "Notițe",
+//     headerTitleAlign: "center",
+//     headerTintColor: "white",
+//     headerStyle: {
+//       backgroundColor: "orange",
+//     },
+// headerLeft: () => (
+//   <HeaderBackButton
+//     onPress={() => {
+//       if (isSelected) {
+//         dispatch(unCheckNotes());
+//         dispatch(getNotes());
+//       } else {
+//         navData.navigation.navigate("GameFieldsScreen");
+//       }
+//     }}
+//     tintColor="white"
+//   />
+// ),
+// headerRight: () => (
+//   <TouchableOpacity
+//     onPress={() =>
+//       isSelected
+//         ? dispatch(deleteNote())
+//         : navData.navigation.navigate("AddNote")
+//     }
+//     style={{ marginRight: 15 }}
+//   >
+//     {isSelected ? (
+//       <AntDesign name="delete" size={24} color="white" />
+//     ) : (
+//       <MaterialIcons name="playlist-add" size={27} color="white" />
+//     )}
+//   </TouchableOpacity>
+// ),
+//   };
+// };
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -176,6 +256,10 @@ const styles = StyleSheet.create({
     fontSize: 25,
     color: "#8c8c8c",
   },
+  headerDeleteCheckBoxContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between"
+  }
 });
 
 export default MemoList;

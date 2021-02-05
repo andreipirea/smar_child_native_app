@@ -25,7 +25,6 @@ export const getNotes = () => {
         type: GET_NOTES_FROM_STORAGE,
         notes: JSON.parse(jsonValue),
       });
-      console.log("get notes", JSON.stringify(jsonValue));
     } catch (e) {
       console.log("error storing", e);
     }
