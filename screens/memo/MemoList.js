@@ -29,15 +29,21 @@ const MemoList = (props) => {
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
 
-  const isSelected = notes.some((e) => e.isChecked === true);
+  useEffect(() => {
+    setTimeout(() => {
+      dispatch(unCheckNotes());
+      dispatch(getNotes());
+    }, 100);
+  }, []);
 
   useEffect(() => {
     if (notes.length == 0) {
       setCheckBoxVisible(false);
     }
-  }, [notes])
-  
+  }, [notes]);
+
   useEffect(() => {
+    dispatch(getNotes());
     props.navigation.setOptions({
       title: checkBoxVisible ? "Selectează notițe" : "Notițe",
       headerTitleAlign: "center",
@@ -47,11 +53,14 @@ const MemoList = (props) => {
       },
       headerLeft: () => (
         <HeaderBackButton
-          onPress={() =>
-            checkBoxVisible
-              ? setCheckBoxVisible(false)
-              : props.navigation.navigate("GameFieldsScreen")
-          }
+          onPress={() => {
+            if (checkBoxVisible) {
+              setCheckBoxVisible(false);
+              dispatch(unCheckNotes());
+            } else {
+              props.navigation.navigate("GameFieldsScreen");
+            }
+          }}
           tintColor="white"
         />
       ),
@@ -68,10 +77,7 @@ const MemoList = (props) => {
           style={{ marginRight: 15 }}
         >
           {checkBoxVisible ? (
-            <View style={styles.headerDeleteCheckBoxContainer}>
-              <AntDesign name="delete" size={24} color="white" />
-              {/* <CheckBox tintColor="white" /> */}
-            </View>
+            <AntDesign name="delete" size={24} color="white" />
           ) : (
             <MaterialIcons name="playlist-add" size={27} color="white" />
           )}
@@ -81,53 +87,24 @@ const MemoList = (props) => {
 
     if (!isFocused) {
       setCheckBoxVisible(false);
-      // setToggleCheckBox(false);
-    }
-    dispatch(getNotes());
-
-
-    if (checkBoxVisible === false) {
       dispatch(unCheckNotes());
-      dispatch(getNotes());
-
     }
+
     const backButtonHandler = () => {
       if (checkBoxVisible == true) {
         setCheckBoxVisible(false);
+        dispatch(unCheckNotes());
+
         return true;
       } else {
         return false;
       }
     };
     BackHandler.addEventListener("hardwareBackPress", backButtonHandler);
-    return () =>
+    return () => {
       BackHandler.removeEventListener("hardwareBackPress", backButtonHandler);
+    };
   }, [isFocused, checkBoxVisible]);
-
-  // useEffect(() => {
-  //   if (!isFocused) {
-  //     setCheckBoxVisible(false);
-  //     // setToggleCheckBox(false);
-  //   }
-  //   dispatch(getNotes());
-  // }, [isFocused]);
-
-  // useEffect(() => {
-  //   if (checkBoxVisible === false) {
-  //     dispatch(unCheckNotes());
-  //   }
-  //   const backButtonHandler = () => {
-  //     if (checkBoxVisible == true) {
-  //       setCheckBoxVisible(false);
-  //       return true;
-  //     } else {
-  //       return false;
-  //     }
-  //   };
-  //   BackHandler.addEventListener("hardwareBackPress", backButtonHandler);
-  //   return () =>
-  //     BackHandler.removeEventListener("hardwareBackPress", backButtonHandler);
-  // }, [checkBoxVisible]);
 
   const Item = (itemData) => {
     return (
@@ -142,7 +119,7 @@ const MemoList = (props) => {
               true
             )
           );
-          dispatch(getNotes());
+          // dispatch(getNotes());
         }}
         onPress={() => {
           props.navigation.navigate("AddNote", {
@@ -258,8 +235,8 @@ const styles = StyleSheet.create({
   },
   headerDeleteCheckBoxContainer: {
     flexDirection: "row",
-    justifyContent: "space-between"
-  }
+    justifyContent: "space-between",
+  },
 });
 
 export default MemoList;
