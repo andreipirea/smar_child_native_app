@@ -32,11 +32,13 @@ export const notesReducer = (state = initialState, action) => {
       storeStateLocal(state);
       return state;
     case UNCHECK_NOTES:
-      state.forEach(e => {
-        if (e.isChecked === true) {
-          e.isChecked = false;
-        }
-      });
+      if(state != null) {
+        state.forEach(e => {
+            if (e.isChecked === true) {
+              e.isChecked = false;
+            }
+          });
+      }    
       storeStateLocal(state);
       return state;
     case DELETE_NOTE:

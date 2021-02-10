@@ -1,17 +1,17 @@
 {
   "expo": {
-    "name": "guess_app",
-    "slug": "guess_app",
+    "name": "Ghici",
+    "slug": "guess-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/book.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/splash_1.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#008000"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 3000
     },
     "assetBundlePatterns": [
       "**/*"
@@ -20,9 +20,11 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "ro.andreipirea.guess_app",
+      "versionCode": 1,
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "foregroundImage": "./assets/book.png",
+        "backgroundColor": "#008000"
       }
     },
     "web": {

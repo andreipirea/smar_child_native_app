@@ -37,7 +37,7 @@ const MemoList = (props) => {
   }, []);
 
   useEffect(() => {
-    if (notes.length == 0) {
+    if (notes != null && notes.length == 0) {
       setCheckBoxVisible(false);
     }
   }, [notes]);
@@ -155,7 +155,7 @@ const MemoList = (props) => {
     );
   };
 
-  if (notes.length == 0) {
+  if (notes != null && notes.length == 0) {
     return (
       <View style={styles.mainContainerText}>
         <Text style={styles.text}>Nu ai nici o notiță!</Text>

@@ -23,7 +23,7 @@ export const getNotes = () => {
 
       dispatch({
         type: GET_NOTES_FROM_STORAGE,
-        notes: JSON.parse(jsonValue),
+        notes: jsonValue != null ? JSON.parse(jsonValue) : [],
       });
     } catch (e) {
       console.log("error storing", e);
